@@ -1,35 +1,36 @@
-from address_book import AddressBook
-from record import Record
+from addressbook import AddressBook
+from functions import *
+from utils import parse_input
 
-# Creating a new address book
-book = AddressBook()
+def main():
+    book = AddressBook()
+    print("Welcome to an assistant bot!")
+    while True:
+        try:
+            user_input = input("Enter a command: ")
+            command, *args = parse_input(user_input)
+            if command in ["close", "exit"]:
+                print("See you!")
+                break
+            elif command == "hello":
+                print("What would you like me to do?")
+            elif command == "add":
+                print(add_contact(args,book))
+            elif command == "change":
+                print(change_contact(args,book))
+            elif command == "phone":
+                print(show_phone(args[0], book))
+            elif command == "all":
+                print('Name    | Phone '  )
+                print("--------|----------")  
+                for name,record in book.data.items(): 
+                    print(f"{record.name.value:<7} | {', '.join(map(str, record.phones)):<12}")
+            elif command == "delete":
+                print(delete_contact(args, book)) 
+            else:
+                print("Invalid command.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
-# Creating a record for John
-john_record = Record("John")
-john_record.add_phone("1234567890")
-john_record.add_phone("5555555555")
-
-# Adding John's record to the address book
-book.add_record(john_record)
-
-# Creating and adding a new record for Jane
-jane_record = Record("Jane")
-jane_record.add_phone("9876543210")
-book.add_record(jane_record)
-
-# Printing all records in the book
-for name, record in book.data.items():
-    print(record)
-
-# Finding and editing the phone number for John
-john = book.find("John")
-john.edit_phone("1234567890", "1112223333")
-
-print(john)  # Output: Contact name: John, phones: 1112223333; 5555555555
-
-# Searching for a specific phone number in John's record
-found_phone = john.find_phone("5555555555")
-print(f"{john.name}: {found_phone}")  # Output: 5555555555
-
-# Deleting Jane's record
-book.delete("Jane")
+if __name__ == "__main__":
+    main()

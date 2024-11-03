@@ -2,23 +2,16 @@ from collections import UserDict
 
 
 class AddressBook(UserDict):
-    """A simple address book implementation."""
+    def __init__(self):
+        self.data = {}
+
 
     def add_record(self, record):
-        """Add a record to the address book."""
-        if record.name.value in self.data:
-            raise KeyError(f"Record with name '{record.name.value}' already exists.")
-        self.data[record.name.value] = record
+        self.data[str(record.name)] = record
 
     def find(self, name):
-        """Find a record by name."""
-        record = self.data.get(name, None)
-        if record is None:
-            raise KeyError(f"Record with name '{name}' not found.")
-        return record
+        return self.data.get(name)
 
     def delete(self, name):
-        """Delete a record by name."""
-        if name not in self.data:
-            raise KeyError(f"Record with name '{name}' not found.")
-        del self.data[name]
+        if name in self.data:
+            del self.data[name]
